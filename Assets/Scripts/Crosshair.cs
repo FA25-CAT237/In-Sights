@@ -12,6 +12,7 @@ public class Crosshair : MonoBehaviour
 
     private GameObject bulletSpawner;
     private GameObject healthManager;
+    private GameObject bossEmotion;
 
     private bool onBoss = false;
 
@@ -25,6 +26,7 @@ public class Crosshair : MonoBehaviour
 
         bulletSpawner = GameObject.Find("BulletSpawner");
         healthManager = GameObject.Find("HealthBars");
+        bossEmotion = GameObject.Find("BossEmotion");
 
         aimAction = InputSystem.actions.FindAction("Aim");
         shootAction = InputSystem.actions.FindAction("Shoot");
@@ -56,6 +58,9 @@ public class Crosshair : MonoBehaviour
 
                 // damage the boss
                 healthManager.GetComponent<HealthManager>().RemoveBossHealth();
+
+                // speed up the boss
+                bossEmotion.GetComponent<BossEmotion>().SpeedUp();
             }
 
             // reset bullet spawner

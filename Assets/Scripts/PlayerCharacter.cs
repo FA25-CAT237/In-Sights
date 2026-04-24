@@ -102,7 +102,6 @@ public class PlayerCharacter : MonoBehaviour
     // - Dash, animate, and reset the cooldown after a delay.
     private IEnumerator Dash()
     {
-        print("Dashing");
         isDashing = true;
         _animator.SetBool("isDashing", true);
         body.linearVelocity = new Vector2(body.linearVelocityX * dashPower, body.linearVelocityY * dashPower);
@@ -128,6 +127,13 @@ public class PlayerCharacter : MonoBehaviour
 
             // instantiate a crosshair
             Invoke(nameof(SpawnCrosshair), 0.5f);
+        }
+        else if(other.gameObject.tag == "BossAttack")
+        {
+            // ow
+
+            // delete the projectile
+            other.gameObject.GetComponent<BossProjectile>().Hit();
         }
     }
 

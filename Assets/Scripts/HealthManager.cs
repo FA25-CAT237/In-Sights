@@ -9,15 +9,23 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private GameObject playerHeart2;
     [SerializeField] private GameObject playerHeart3;
     [SerializeField] private Sprite emptyPlayerHeart;
+    private bool playerHurtCooldown;
 
     [SerializeField] private GameObject bossHeart1;
     [SerializeField] private GameObject bossHeart2;
     [SerializeField] private GameObject bossHeart3;
     [SerializeField] private Sprite emptyBossHeart;
 
+    [SerializeField] private GameObject theBoss;
+
     public void RemovePlayerHealth()
     {
-        playerHealth--;
+        if(playerHurtCooldown == false)
+        {
+            playerHealth--;
+            playerHurtCooldown = true;
+            Invoke(nameof(ResetPlayerHurtCooldown), 2f);
+        }
         if (playerHealth == 2)
         {
             playerHeart3.gameObject.GetComponent<SpriteRenderer>().sprite = emptyPlayerHeart;
@@ -29,6 +37,9 @@ public class HealthManager : MonoBehaviour
         if (playerHealth == 0)
         {
             playerHeart1.gameObject.GetComponent<SpriteRenderer>().sprite = emptyPlayerHeart;
+
+            // player is game over
+
         }
     }
 
@@ -46,6 +57,14 @@ public class HealthManager : MonoBehaviour
         if (bossHealth == 0)
         {
             bossHeart1.gameObject.GetComponent<SpriteRenderer>().sprite = emptyBossHeart;
+
+            // boss is dead
+            theBoss.GetComponent<BossEmotion>().BossDie();
         }
+    }
+
+    void ResetPlayerHurtCooldown()
+    {
+        playerHurtCooldown = false;
     }
 }
