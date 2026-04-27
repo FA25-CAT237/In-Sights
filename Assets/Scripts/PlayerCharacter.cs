@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 // THIS IS THE SCRIPT FOR "In Sights" AAA
 public class PlayerCharacter : MonoBehaviour
@@ -128,12 +129,10 @@ public class PlayerCharacter : MonoBehaviour
             // instantiate a crosshair
             Invoke(nameof(SpawnCrosshair), 0.5f);
         }
-        else if(other.gameObject.tag == "BossAttack")
+        else if(other.gameObject.tag == "BossAttack" || other.gameObject.tag == "Boss")
         {
             // ow
-
-            // delete the projectile
-            other.gameObject.GetComponent<BossProjectile>().Hit();
+            healthManager.GetComponent<HealthManager>().RemovePlayerHealth();
         }
     }
 
@@ -143,5 +142,25 @@ public class PlayerCharacter : MonoBehaviour
     private void SpawnCrosshair()
     {
         Instantiate(crosshair, transform.position, Quaternion.identity);
+    }
+
+    // STARTPLAYERDIE:
+    // - i dont know girl
+    // - this lets other scripts call playerdie as a coroutine
+    public void StartPlayerDie()
+    {
+        StartCoroutine(PlayerDie());
+    }
+
+    // PLAYERDIES:
+    // - Play an animation
+    // - Load the death screen
+    private IEnumerator PlayerDie()
+    {
+        // animate
+        print("Huh?");
+        yield return new WaitForSeconds(2);
+        print("What?");
+        SceneManager.LoadScene("TitleScreen");
     }
 }

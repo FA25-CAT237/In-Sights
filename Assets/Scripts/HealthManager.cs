@@ -17,6 +17,7 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private Sprite emptyBossHeart;
 
     [SerializeField] private GameObject theBoss;
+    [SerializeField] private GameObject thePlayer;
 
     public void RemovePlayerHealth()
     {
@@ -39,7 +40,7 @@ public class HealthManager : MonoBehaviour
             playerHeart1.gameObject.GetComponent<SpriteRenderer>().sprite = emptyPlayerHeart;
 
             // player is game over
-
+            thePlayer.GetComponent<PlayerCharacter>().StartPlayerDie();
         }
     }
 

@@ -29,9 +29,10 @@ public class BossProjectile : MonoBehaviour
 
     // HIT:
     // - damage player
+    // - do nothing now actually this really shouldve been in the player script at the start
     public void Hit()
     {
         // hurt player
-        healthManager.GetComponent<HealthManager>().RemovePlayerHealth();
+        // healthManager.GetComponent<HealthManager>().RemovePlayerHealth();
     }
 }

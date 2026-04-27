@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossEmotion : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class BossEmotion : MonoBehaviour
     [SerializeField] private GameObject happyProjectile;
     [SerializeField] private GameObject sadProjectile;
     [SerializeField] private GameObject madProjectile;
+
+    [SerializeField] private Animator _animator;
 
     public float speed;
     public float moveRate;
@@ -62,6 +65,8 @@ public class BossEmotion : MonoBehaviour
 
             if(transform.position != centerNode.transform.position)
                 transform.position = Vector3.MoveTowards(transform.position, centerNode.transform.position, step);
+            else
+                SceneManager.LoadScene("TitleScreen"); // replace with a proper death later
         }
     }
 
@@ -113,7 +118,7 @@ public class BossEmotion : MonoBehaviour
         else if(randomizer <= 8) // 8 or 9; 20%
         {
             print("Attack three chosen.");
-            StartCoroutine(SadAttack()); // change to madattack when it's done
+            StartCoroutine(AngryAttack());
         }
         else // What
         {
@@ -127,22 +132,21 @@ public class BossEmotion : MonoBehaviour
     private IEnumerator HappyAttack()
     {
         // animate into happiness
-        print("!");
+        _animator.SetInteger("Emotion", 0);
         yield return new WaitForSeconds(0.5f);
-        print("?");
 
         // set target node; pivot if trying to stay in the same place
         randomizer = Random.Range(0, 1);
         if(randomizer == 0)
         {
-            if(targetNode = rightUpNode)
+            if(targetNode == rightUpNode)
                 targetNode = leftUpNode;
             else
                 targetNode = rightUpNode;
         }
         else
         {
-            if(targetNode = leftUpNode)
+            if(targetNode == leftUpNode)
                 targetNode = rightUpNode;
             else
                 targetNode = leftUpNode;
@@ -178,7 +182,7 @@ public class BossEmotion : MonoBehaviour
     private IEnumerator SadAttack()
     {
         // animate into sadness
-
+        _animator.SetInteger("Emotion", 1);
         yield return new WaitForSeconds(0.5f);
 
 
@@ -186,14 +190,14 @@ public class BossEmotion : MonoBehaviour
         randomizer = Random.Range(0, 1);
         if(randomizer == 0)
         {
-            if(targetNode = rightDownNode)
+            if(targetNode == rightDownNode)
                 targetNode = leftDownNode;
             else
                 targetNode = rightDownNode;
         }
         else
         {
-            if(targetNode = leftDownNode)
+            if(targetNode == leftDownNode)
                 targetNode = rightDownNode;
             else
                 targetNode = leftDownNode;
@@ -216,6 +220,64 @@ public class BossEmotion : MonoBehaviour
             // summon
             Instantiate(sadProjectile, transform.position, Quaternion.identity);
             yield return new WaitForSeconds(0.2f);
+        }
+
+        // reset
+        chargeUp = 0;
+        moveCooldown = false;
+    }
+
+    // ANGRYATTACK:
+    // - Do the angry attack
+    // - Reset attack when finished
+    private IEnumerator AngryAttack()
+    {
+        // animate into anger
+        _animator.SetInteger("Emotion", 2);
+        yield return new WaitForSeconds(0.5f);
+
+
+        // summon projectiles
+        for(int i = 0; i < 50; i++)
+        {
+            // stop if dead
+            if(dead == true)
+                yield break;
+
+            // summon
+            Instantiate(madProjectile, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        // set target node; pivot if trying to stay in the same place
+        randomizer = Random.Range(0, 1);
+        if(randomizer == 0)
+        {
+            if(targetNode == centerNode)
+                targetNode = rightUpNode;
+            else
+                targetNode = centerNode;
+        }
+        else
+        {
+            if(targetNode == centerNode)
+                targetNode = leftUpNode;
+            else
+                targetNode = centerNode;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        // summon MORE projectiles
+        for(int i = 0; i < 50; i++)
+        {
+            // stop if dead
+            if(dead == true)
+                yield break;
+
+            // summon
+            Instantiate(madProjectile, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.01f);
         }
 
         // reset
