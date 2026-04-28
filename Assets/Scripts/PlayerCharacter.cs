@@ -16,6 +16,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool dashCooldown = false;
 
     private bool loaded = false;
+    private bool dead = false;
     [SerializeField] private GameObject crosshair;
 
     // actions
@@ -67,17 +68,17 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         // get direction
-        if (moveValue.x < 0)
+        if (moveValue.x < 0 && dead == false)
         {
             _animator.SetBool("isLeft", true);
             _animator.SetBool("isRight", false);
         }
-        else if (moveValue.x > 0)
+        else if (moveValue.x > 0 && dead == false)
         {
             _animator.SetBool("isLeft", false);
             _animator.SetBool("isRight", true);
         }
-        else
+        else if (dead == false)
         {
             _animator.SetBool("isLeft", false);
             _animator.SetBool("isRight", false);
@@ -157,10 +158,31 @@ public class PlayerCharacter : MonoBehaviour
     // - Load the death screen
     private IEnumerator PlayerDie()
     {
+        dead = true;
+
         // animate
-        print("Huh?");
-        yield return new WaitForSeconds(2);
-        print("What?");
-        SceneManager.LoadScene("TitleScreen");
+        _animator.SetBool("isDashing", true);
+        _animator.SetBool("isLeft", true);
+        yield return new WaitForSeconds(0.5f);
+        _animator.SetBool("isDashing", false);
+        _animator.SetBool("isRight", true);
+        _animator.SetBool("isLeft", false);
+        _animator.SetBool("isDashing", true);
+        yield return new WaitForSeconds(0.5f);
+        _animator.SetBool("isDashing", false);
+        _animator.SetBool("isRight", false);
+        _animator.SetBool("isLeft", true);
+        _animator.SetBool("isDashing", true);
+        yield return new WaitForSeconds(0.5f);
+        _animator.SetBool("isDashing", false);
+        _animator.SetBool("isRight", true);
+        _animator.SetBool("isLeft", false);
+        _animator.SetBool("isDashing", true);
+        yield return new WaitForSeconds(0.5f);
+        _animator.SetBool("isDashing", false);
+        _animator.SetBool("isRight", false);
+        _animator.SetBool("isLeft", true);
+        _animator.SetBool("isDashing", true);
+        SceneManager.LoadScene("DeathScreen");
     }
 }

@@ -180,3 +180,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 6
+  loadsfx: {fileID: 8300000, guid: b19306df30c401c4ca4755a2a6d8424a, type: 3}
+  shootsfx: {fileID: 8300000, guid: 4c02635c138dc1a4582a0aae7f222639, type: 3}

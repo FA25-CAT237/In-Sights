@@ -50,14 +50,17 @@ public class HealthManager : MonoBehaviour
         if(bossHealth == 2)
         {
             bossHeart3.gameObject.GetComponent<SpriteRenderer>().sprite = emptyBossHeart;
+            theBoss.GetComponent<BossEmotion>().BossHurt();
         }
         if(bossHealth == 1)
         {
             bossHeart2.gameObject.GetComponent<SpriteRenderer>().sprite = emptyBossHeart;
+            theBoss.GetComponent<BossEmotion>().BossHurt();
         }
         if (bossHealth == 0)
         {
             bossHeart1.gameObject.GetComponent<SpriteRenderer>().sprite = emptyBossHeart;
+            theBoss.GetComponent<BossEmotion>().BossHurt();
 
             // boss is dead
             theBoss.GetComponent<BossEmotion>().BossDie();

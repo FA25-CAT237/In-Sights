@@ -66,7 +66,10 @@ public class BossEmotion : MonoBehaviour
             if(transform.position != centerNode.transform.position)
                 transform.position = Vector3.MoveTowards(transform.position, centerNode.transform.position, step);
             else
-                SceneManager.LoadScene("TitleScreen"); // replace with a proper death later
+            {
+                print("Dead"); // replace with a proper death later
+                Invoke(nameof(GoToWin), 3f);
+            }
         }
     }
 
@@ -104,18 +107,18 @@ public class BossEmotion : MonoBehaviour
     // - Randomize which attack we're doing.
     void ChooseAttack()
     {
-        randomizer = Random.Range(0, 9);
-        if(randomizer >= 0 && randomizer <= 3) // between 0 and 3; 40%
+        randomizer = Random.Range(0, 8);
+        if(randomizer >= 0 && randomizer <= 2) // 0, 1, 2; 33.3%
         {
             print("Attack one chosen.");
             StartCoroutine(HappyAttack());
         }
-        else if(randomizer > 3 && randomizer <= 7) // between 4 and 7; 40%
+        else if(randomizer > 2 && randomizer <= 5) // 3, 4, 5; 33.3%
         {
             print("Attack two chosen.");
             StartCoroutine(SadAttack());
         }
-        else if(randomizer <= 8) // 8 or 9; 20%
+        else if(randomizer >= 6) // 6, 7, 8; 33.3%
         {
             print("Attack three chosen.");
             StartCoroutine(AngryAttack());
@@ -123,6 +126,7 @@ public class BossEmotion : MonoBehaviour
         else // What
         {
             Debug.Log("Attack randomizer out of bounds.");
+            Debug.Log(randomizer);
         }
     }
 
@@ -285,6 +289,18 @@ public class BossEmotion : MonoBehaviour
         moveCooldown = false;
     }
 
+    // BOSSHURT:
+    // - Animate getting hurt
+    public void BossHurt()
+    {
+        _animator.SetBool("Hurt", true);
+        Invoke(nameof(BossUnHurt), 0.2f);
+    }
+    public void BossUnHurt()
+    {
+        _animator.SetBool("Hurt", false);
+    }
+
     // BOSSDIE:
     // - Die
     public void BossDie()
@@ -292,5 +308,12 @@ public class BossEmotion : MonoBehaviour
         print("deaaad");
 
         dead = true;
+    }
+
+    // GOTOTITLE:
+    // - Do   that
+    void GoToWin()
+    {
+        SceneManager.LoadScene("WinScreen");
     }
 }

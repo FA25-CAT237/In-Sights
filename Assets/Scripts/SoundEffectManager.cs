@@ -17,9 +17,14 @@ public class SoundEffectManager : MonoBehaviour
         if(instance == null)
             instance = this;
 
-        player = GameObject.FindGameObjectsWithTag("Player")[0];
-        if (player == null)
-            Debug.Log("Player's missing.");
+        
+        if (GameObject.FindGameObjectsWithTag("Player").Length > 0)
+            player = GameObject.FindGameObjectsWithTag("Player")[0];
+        else
+        {
+            Debug.Log("No player in this scene for SFXManager.");
+            player = GameObject.FindGameObjectsWithTag("MainCamera")[0];
+        }
     }
 
     private void Start()

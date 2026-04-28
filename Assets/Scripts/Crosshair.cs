@@ -14,6 +14,10 @@ public class Crosshair : MonoBehaviour
     private GameObject healthManager;
     private GameObject bossEmotion;
 
+    // sfx
+    [SerializeField] private AudioClip loadsfx;
+    [SerializeField] private AudioClip shootsfx;
+
     private bool onBoss = false;
 
     // AWAKE:
@@ -30,6 +34,8 @@ public class Crosshair : MonoBehaviour
 
         aimAction = InputSystem.actions.FindAction("Aim");
         shootAction = InputSystem.actions.FindAction("Shoot");
+
+        SoundEffectManager.instance.PlaySoundEffectClip(loadsfx, transform, 1f);
     }
 
     // UPDATE:
@@ -51,6 +57,8 @@ public class Crosshair : MonoBehaviour
         // handle shooting
         if (shootAction.IsPressed())
         {
+            SoundEffectManager.instance.PlaySoundEffectClip(shootsfx, transform, 0.5f);
+
             // check if it's on the boss
             if(onBoss == true)
             {

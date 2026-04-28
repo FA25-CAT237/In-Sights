@@ -36,6 +36,7 @@ public class TitleCameraMover : MonoBehaviour
     }
 
     // SETNODE:
+    // - Choose the node that the camera should be moving to.
     public void SetNode(int whichNode)
     {
         if(takingInput == true)
@@ -49,5 +50,12 @@ public class TitleCameraMover : MonoBehaviour
             else
                 Debug.Log("Set node is out of bounds.");
         }
+    }
+
+    // QUIT:
+    // - Might as well put it here for the title screen.
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
