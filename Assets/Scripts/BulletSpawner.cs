@@ -9,6 +9,9 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private GameObject bullet;
 
+    public int spawnRateFloor;
+    public int spawnRateCeiling;
+
     // AWAKE:
     // - get the body
     // - set up the moveAction
@@ -45,7 +48,7 @@ public class BulletSpawner : MonoBehaviour
             canBullet = false;
 
             // prime the bullet
-            Invoke(nameof(SpawnBullet), Random.Range(3, 6));
+            Invoke(nameof(SpawnBullet), Random.Range(spawnRateFloor, spawnRateCeiling));
         }
     }
 

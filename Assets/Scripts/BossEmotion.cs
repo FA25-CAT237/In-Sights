@@ -10,6 +10,7 @@ public class BossEmotion : MonoBehaviour
     [SerializeField] private GameObject rightUpNode;
     [SerializeField] private GameObject leftDownNode;
     [SerializeField] private GameObject rightDownNode;
+    [SerializeField] private GameObject deathNode;
     private GameObject targetNode;
 
     // different attacks to instantiate
@@ -63,13 +64,13 @@ public class BossEmotion : MonoBehaviour
         {
             float step = speed * Time.deltaTime;
 
-            if(transform.position != centerNode.transform.position)
+            while(transform.position != centerNode.transform.position && targetNode != deathNode)
                 transform.position = Vector3.MoveTowards(transform.position, centerNode.transform.position, step);
-            else
-            {
-                print("Dead"); // replace with a proper death later
-                Invoke(nameof(GoToWin), 3f);
-            }
+            print("Dead");
+            _animator.SetBool("Dead", true);
+            targetNode = deathNode;
+            Invoke(nameof(DeathMover), 1f);
+            Invoke(nameof(GoToWin), 3f);
         }
     }
 
@@ -308,6 +309,14 @@ public class BossEmotion : MonoBehaviour
         print("deaaad");
 
         dead = true;
+    }
+
+    // DEATHMOVER:
+    // - coughs up blood
+    // - i would kill for a sensible timer function right now
+    void DeathMover()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, deathNode.transform.position, (speed * Time.deltaTime));
     }
 
     // GOTOTITLE:
